@@ -1,0 +1,284 @@
+[
+  {
+    "id": "1",
+    "numero": "AT23061234567",
+    "contrato": "JL591230500123",
+    "tipo": "JMA",
+    "proyecto": "Digital Marketing Campaign Q3",
+    "monto": 25500,
+    "saldo": 1500,
+    "fecha": "2023-06-15",
+    "estado": "Completado",
+    "adjuntos": ["AT23061234567.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21800",
+        "fecha": "2023-08-15",
+        "monto": 24000,
+        "notas": "Pago aceptado"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "numero": "AT23061234568",
+    "contrato": "JL591230500124",
+    "tipo": "GAR",
+    "proyecto": "Software Development Sprint 1",
+    "monto": 38000,
+    "saldo": 5000,
+    "fecha": "2023-07-10",
+    "estado": "En proceso",
+    "adjuntos": ["AT23061234568.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21801",
+        "fecha": "2023-09-01",
+        "monto": 33000,
+        "notas": "Primer pago"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "numero": "AT23061234569",
+    "contrato": "JL591230500125",
+    "tipo": "JMA",
+    "proyecto": "Infrastructure Upgrade Phase 2",
+    "monto": 60000,
+    "saldo": 10000,
+    "fecha": "2023-08-05",
+    "estado": "Pendiente",
+    "adjuntos": ["AT23061234569.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21802",
+        "fecha": "2023-10-10",
+        "monto": 50000,
+        "notas": "Adelanto parcial"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "numero": "AT23061234570",
+    "contrato": "JL591230500126",
+    "tipo": "GAR",
+    "proyecto": "Cybersecurity Assessment",
+    "monto": 17500,
+    "saldo": 0,
+    "fecha": "2023-09-01",
+    "estado": "Completado",
+    "adjuntos": ["AT23061234570.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21803",
+        "fecha": "2023-10-15",
+        "monto": 17500,
+        "notas": "Pago final"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "numero": "AT23061234571",
+    "contrato": "JL591230500127",
+    "tipo": "JMA",
+    "proyecto": "Cloud Migration Project",
+    "monto": 50000,
+    "saldo": 10000,
+    "fecha": "2023-09-15",
+    "estado": "En proceso",
+    "adjuntos": ["AT23061234571.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21804",
+        "fecha": "2023-11-05",
+        "monto": 40000,
+        "notas": "Pago parcial"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "numero": "AT23061234572",
+    "contrato": "JL591230500128",
+    "tipo": "GAR",
+    "proyecto": "SEO Optimization Campaign",
+    "monto": 12000,
+    "saldo": 2000,
+    "fecha": "2023-10-01",
+    "estado": "Pendiente",
+    "adjuntos": ["AT23061234572.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21805",
+        "fecha": "2023-12-01",
+        "monto": 10000,
+        "notas": "Pago inicial"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "numero": "AT23061234573",
+    "contrato": "JL591230500129",
+    "tipo": "JMA",
+    "proyecto": "AI Chatbot Implementation",
+    "monto": 45000,
+    "saldo": 5000,
+    "fecha": "2023-11-10",
+    "estado": "En proceso",
+    "adjuntos": ["AT23061234573.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21806",
+        "fecha": "2024-01-05",
+        "monto": 40000,
+        "notas": "Primer pago"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "numero": "AT23061234574",
+    "contrato": "JL591230500130",
+    "tipo": "GAR",
+    "proyecto": "E-commerce Platform Upgrade",
+    "monto": 30000,
+    "saldo": 0,
+    "fecha": "2023-12-01",
+    "estado": "Completado",
+    "adjuntos": ["AT23061234574.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21807",
+        "fecha": "2024-02-10",
+        "monto": 30000,
+        "notas": "Pago final"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "numero": "AT23061234575",
+    "contrato": "JL591230500131",
+    "tipo": "JMA",
+    "proyecto": "Data Analytics Dashboard",
+    "monto": 55000,
+    "saldo": 15000,
+    "fecha": "2023-12-15",
+    "estado": "Pendiente",
+    "adjuntos": ["AT23061234575.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21808",
+        "fecha": "2024-02-20",
+        "monto": 40000,
+        "notas": "Pago inicial"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "numero": "AT23061234576",
+    "contrato": "JL591230500132",
+    "tipo": "GAR",
+    "proyecto": "IT Infrastructure Overhaul",
+    "monto": 70000,
+    "saldo": 20000,
+    "fecha": "2024-01-05",
+    "estado": "En proceso",
+    "adjuntos": ["AT23061234576.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21809",
+        "fecha": "2024-03-01",
+        "monto": 50000,
+        "notas": "Primer pago"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "numero": "AT23061234577",
+    "contrato": "JL591230500133",
+    "tipo": "JMA",
+    "proyecto": "Mobile App Development",
+    "monto": 60000,
+    "saldo": 10000,
+    "fecha": "2024-01-20",
+    "estado": "Pendiente",
+    "adjuntos": ["AT23061234577.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21810",
+        "fecha": "2024-03-15",
+        "monto": 50000,
+        "notas": "Pago parcial"
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "numero": "AT23061234578",
+    "contrato": "JL591230500134",
+    "tipo": "GAR",
+    "proyecto": "Cloud Security Enhancement",
+    "monto": 25000,
+    "saldo": 5000,
+    "fecha": "2024-02-01",
+    "estado": "En proceso",
+    "adjuntos": ["AT23061234578.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21811",
+        "fecha": "2024-04-01",
+        "monto": 20000,
+        "notas": "Primer pago"
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "numero": "AT23061234579",
+    "contrato": "JL591230500135",
+    "tipo": "JMA",
+    "proyecto": "5G Network Deployment",
+    "monto": 80000,
+    "saldo": 30000,
+    "fecha": "2024-02-15",
+    "estado": "Pendiente",
+    "adjuntos": ["AT23061234579.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21812",
+        "fecha": "2024-04-15",
+        "monto": 50000,
+        "notas": "Pago inicial"
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "numero": "AT23061234580",
+    "contrato": "JL591230500136",
+    "tipo": "GAR",
+    "proyecto": "Machine Learning Model Training",
+    "monto": 40000,
+    "saldo": 0,
+    "fecha": "2024-03-01",
+    "estado": "Completado",
+    "adjuntos": ["AT23061234580.pdf"],
+    "pagos": [
+      {
+        "referencia": "INV-21813",
+        "fecha": "2024-05-01",
+        "monto": 40000,
+        "notas": "Pago final"
+      }
+    ]
+  }
+]
+
+  

@@ -1,13 +1,15 @@
 import { Outlet } from "react-router-dom";
-import Header from "@/components/Header";
+import AppSidebar from "@/components/AppSidebar"; 
+import { SidebarProvider } from "@/components/ui/sidebar"; 
 
 const Layout = () => {
   return (
-    <>
-      <Header />
-      <Outlet />
-    </>
+    <SidebarProvider>
+        <AppSidebar />       
+          <Outlet />
+    </SidebarProvider>
   );
 };
 
 export default Layout;
+

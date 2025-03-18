@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import Layout from "@/Layout";
 import ErrorPage from "@/pages/ErrorPage";
 import Home from "@/pages/Home";
