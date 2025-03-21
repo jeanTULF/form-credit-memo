@@ -11,7 +11,6 @@ const FilterActivities = () => {
         "Type",
         "Project Name",
         "S/PO Amount",
-        "Curr. Amount",
         "Excecution Date",
         "status"
       ];

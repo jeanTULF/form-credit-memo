@@ -6,13 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { FileText, Download, Paperclip } from "lucide-react"
+import { FileText, Download, Paperclip, HandCoins } from "lucide-react"
 import { formatCurrency, formatDate, generatePDF, getStatusColor } from "@/lib/utils"
+import { Navigate } from "react-router-dom"
 
 export const DetailsDialog = ({ activity, onClose }) => {
 
   return (
-    <Dialog open={!!activity} onOpenChange={onClose} className="">
+    <Dialog open={!!activity} onOpenChange={onClose}>
       <DialogContent className="w-screen max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">Detalles de Actividad: {activity.numero}</DialogTitle>
@@ -20,9 +21,9 @@ export const DetailsDialog = ({ activity, onClose }) => {
 
         <Tabs defaultValue="general" className="mt-4">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="general">Información General</TabsTrigger>
-            <TabsTrigger value="pagos">Pagos</TabsTrigger>
-            <TabsTrigger value="adjuntos">Adjuntos</TabsTrigger>
+            <TabsTrigger value="general" className="cursor-pointer">Información General</TabsTrigger>
+            <TabsTrigger value="pagos" className="cursor-pointer">Pagos Aplicados</TabsTrigger>
+            <TabsTrigger value="adjuntos" className="cursor-pointer">Adjuntos</TabsTrigger>
           </TabsList>
 
           <TabsContent value="general" className="space-y-4 mt-4">
@@ -34,7 +35,7 @@ export const DetailsDialog = ({ activity, onClose }) => {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm font-medium">Número:</span>
+                    <span className="text-sm font-medium">Activity N°:</span>
                     <span>{activity.numero}</span>
                   </div>
                   <div className="flex justify-between">
@@ -67,19 +68,19 @@ export const DetailsDialog = ({ activity, onClose }) => {
                     <span>{activity.contrato}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm font-medium">Monto Total:</span>
+                    <span className="text-sm font-medium">S/PO Amount:</span>
                     <span className="font-semibold">{formatCurrency(activity.monto)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm font-medium">Saldo Restante:</span>
+                    <span className="text-sm font-medium">No aplicado:</span>
                     <span className="font-semibold">{formatCurrency(activity.saldo)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm font-medium">Pagado:</span>
+                    <span className="text-sm font-medium">Aplicado:</span>
                     <span className="font-semibold">{formatCurrency(activity.monto - activity.saldo)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm font-medium">Porcentaje Pagado:</span>
+                    <span className="text-sm font-medium">Porcentaje Aplicado:</span>
                     <span className="font-semibold">
                       {Math.round(((activity.monto - activity.saldo) / activity.monto) * 100)}%
                     </span>
@@ -91,9 +92,17 @@ export const DetailsDialog = ({ activity, onClose }) => {
 
           <TabsContent value="pagos" className="mt-4">
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between ">
+                <div>
                 <CardTitle>Historial de Pagos</CardTitle>
                 <CardDescription>Registro de pagos aplicados a esta actividad</CardDescription>
+                </div>
+                {activity.saldo > 0 && (
+                  <Button onClick="" className="cursor-pointer bg-amber-300 hover:bg-amber-400 text-black">
+                    <HandCoins className="h-4 w-4 mr-2" />
+                    Aplicar Pago
+                  </Button>
+                )}
               </CardHeader>
               <CardContent>
                 {activity.pagos && activity.pagos.length > 0 ? (
@@ -102,8 +111,8 @@ export const DetailsDialog = ({ activity, onClose }) => {
                       <TableRow>
                         <TableHead>Referencia</TableHead>
                         <TableHead>Fecha</TableHead>
-                        <TableHead className="text-right">Monto</TableHead>
-                        <TableHead>Método</TableHead>
+                        <TableHead>Monto</TableHead>
+                        <TableHead>Factura aplicada</TableHead>
                         <TableHead>Notas</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -112,7 +121,7 @@ export const DetailsDialog = ({ activity, onClose }) => {
                         <TableRow key={index}>
                           <TableCell className="font-medium">{pago.referencia}</TableCell>
                           <TableCell>{formatDate(new Date(pago.fecha))}</TableCell>
-                          <TableCell className="text-right">{formatCurrency(pago.monto)}</TableCell>
+                          <TableCell>{formatCurrency(pago.monto)}</TableCell>
                           <TableCell>{pago.metodo}</TableCell>
                           <TableCell>{pago.notas}</TableCell>
                         </TableRow>
@@ -161,7 +170,7 @@ export const DetailsDialog = ({ activity, onClose }) => {
         </Tabs>
 
         <DialogFooter className="mt-6">
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} >
             Cerrar
           </Button>
           <Button onClick={() => generatePDF(activity)} className="gap-2">

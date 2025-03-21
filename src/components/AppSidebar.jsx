@@ -6,15 +6,20 @@ SidebarMenuButton,
 SidebarHeader, 
 SidebarFooter } 
 from "@/components/ui/sidebar";
-import { FileText, FileUp, Home, LogOut, User } from "lucide-react";
+import { FileText, FileUp, HandCoins, Home, LogOut, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 
 const items = [
     {
       title: "Home",
-      url: "#",
+      url: "/",
       icon: Home,
+    },
+    {
+      title: "Aplicar pago",
+      url: "/payments",
+      icon: HandCoins
     },
     {
       title: "Subir archivo",
@@ -41,7 +46,7 @@ const AppSidebar = () => {
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild /* isActive={} */>
                 <a href={item.url}>
                     <item.icon />
                     {item.title}

@@ -52,7 +52,6 @@ export const DataTable = ({ data, isLoading, columns, onActivitySelect }) => {
                   <TableCell>{item.tipo}</TableCell>
                   <TableCell>{item.proyecto}</TableCell>
                   <TableCell>{formatCurrency(item.monto)}</TableCell>
-                  <TableCell>{formatCurrency(item.saldo)}</TableCell>
                   <TableCell>{formatDate(item.fecha)}</TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(item.estado)}>{item.estado}</Badge>
