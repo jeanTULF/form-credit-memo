@@ -6,7 +6,7 @@ SidebarMenuButton,
 SidebarHeader, 
 SidebarFooter } 
 from "@/components/ui/sidebar";
-import { FileText, FileUp, HandCoins, Home, LogOut, User } from "lucide-react";
+import { FileText, FileUp, HandCoins, Home, LogOut, NotepadText, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 
@@ -15,6 +15,11 @@ const items = [
       title: "Home",
       url: "/",
       icon: Home,
+    },
+    {
+      title: "Nueva actividad",
+      url: "/new-activity",
+      icon: NotepadText
     },
     {
       title: "Aplicar pago",

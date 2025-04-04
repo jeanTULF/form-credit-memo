@@ -84,7 +84,7 @@ const ApplyPayment = ({ open, onClose, sourceActivity, activities, onApplyPaymen
   };
 
   const totalDistributed = distributions.reduce((sum, d) => sum + d.monto, 0);
-  // const applicableActivities = activities.filter((a) => a.saldo > 0);
+  const applicableActivities = activities.filter((a) => a.saldo > 0);
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">

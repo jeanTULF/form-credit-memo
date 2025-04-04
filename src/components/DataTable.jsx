@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Eye, FileText, PenLine } from 'lucide-react';
+import { Eye,Trash2 } from 'lucide-react';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { formatCurrency, formatDate, generatePDF, getStatusColor } from '@/lib/utils';
 import { DetailsDialog } from './DetailsDialog';
@@ -61,18 +61,18 @@ export const DataTable = ({ data, isLoading, columns, onActivitySelect }) => {
                     <Button
                         variant="outline"
                         size="icon"
-                        // onClick={() => onActivitySelect(item)}
-                        title="Editar"
-                      >
-                        <PenLine className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
                         onClick={() => handleActivitySelect(item)}
                         title="Ver detalles"
                       >
                         <Eye className="h-4 w-4" />
+                      </Button>
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        // onClick={() => onActivitySelect(item)}
+                        title="Eliminar"
+                      >
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </TableCell>
