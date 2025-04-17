@@ -24,7 +24,7 @@ const DashboardCards = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-            {new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(
+            {new Intl.NumberFormat("es-MX", { style: "currency", currency: "USD" }).format(
                 data.reduce((sum, a) => sum + a.monto, 0),
               )}
             </div>
@@ -37,7 +37,9 @@ const DashboardCards = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              25
+            {new Intl.NumberFormat("es-MX", { style: "currency", currency: "USD" }).format(
+                data.reduce((sum, a) => sum + a.saldo, 0),
+              )}
             </div>
           </CardContent>
         </Card>
@@ -48,7 +50,9 @@ const DashboardCards = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              25
+            {new Intl.NumberFormat("es-MX", { style: "currency", currency: "USD" }).format(
+                data.reduce((sum, a) => sum + (a.monto - a.saldo) , 0),
+              )}
             </div>
           </CardContent>
         </Card>

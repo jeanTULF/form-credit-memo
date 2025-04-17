@@ -8,9 +8,11 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { FileText, Download, Paperclip, HandCoins } from "lucide-react"
 import { formatCurrency, formatDate, generatePDF, getStatusColor } from "@/lib/utils"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export const DetailsDialog = ({ activity, onClose }) => {
+
+ const navigate = useNavigate();
 
   return (
     <Dialog open={!!activity} onOpenChange={onClose}>
@@ -98,7 +100,7 @@ export const DetailsDialog = ({ activity, onClose }) => {
                 <CardDescription>Registro de pagos aplicados a esta actividad</CardDescription>
                 </div>
                 {activity.saldo > 0 && (
-                  <Button onClick="" className="cursor-pointer bg-amber-300 hover:bg-amber-400 text-black">
+                  <Button onClick={() => {navigate("/payments")}} className="cursor-pointer bg-amber-300 hover:bg-amber-400 text-black">
                     <HandCoins className="h-4 w-4 mr-2" />
                     Aplicar Pago
                   </Button>

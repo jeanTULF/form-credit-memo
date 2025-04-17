@@ -8,7 +8,7 @@
     "monto": 25500,
     "saldo": 1500,
     "fecha": "2023-06-15",
-    "estado": "Completado",
+    "estado": "Pendiente",
     "adjuntos": ["AT23061234567.pdf"],
     "pagos": [
       {

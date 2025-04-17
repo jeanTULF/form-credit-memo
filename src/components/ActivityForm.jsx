@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -13,11 +13,73 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { useForm } from 'react-hook-form'
-import { CalendarIcon, Upload } from 'lucide-react'
+import { CalendarIcon, Upload, X } from 'lucide-react'
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
+import { v4 as uuidv4 } from 'uuid'
 
-const ActivityForm = () => {
+const ActivityForm = ({onSubmit, existingActivities}) => {
+
+  const [adjuntos, setAdjuntos] = useState([])
+
+   // Manejar el drag and drop de archivos
+   const handleDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const newAdjuntos = [...adjuntos]
+      Array.from(e.dataTransfer.files).forEach((file) => {
+        newAdjuntos.push(file.name)
+      })
+      setAdjuntos(newAdjuntos)
+    }
+  }
+
+  const handleRemoveAdjunto = (index) => {
+    const newAdjuntos = [...adjuntos]
+    newAdjuntos.splice(index, 1)
+    setAdjuntos(newAdjuntos)
+  }
+
+  const handleFormSubmit = (values) => {
+
+    const id = `AT-${uuidv4()}`
+
+    // Convertir el monto de string a número
+    const montoNumerico = Number.parseFloat(values.monto.replace(/,/g, ""))
+
+    // Calcular el saldo automáticamente basado en el estado
+    const saldo = values.estado === "Completado" ? 0 : montoNumerico
+
+    // Crear la nueva actividad
+    const newActivity = {
+      id,
+      numero: values.numero,
+      contrato: values.contrato,
+      tipo: values.tipo,
+      proyecto: values.proyecto,
+      monto: montoNumerico,
+      saldo: saldo,
+      fecha: values.fecha,
+      estado: values.estado,
+      adjuntos: adjuntos,
+      pagos: [], // Inicialmente sin pagos
+    }
+
+    // Enviar la nueva actividad al componente padre
+    onSubmit(newActivity)
+    console.log(newActivity)
+
+    // Resetear el formulario
+    form.reset()
+    setAdjuntos([])
+  }
 
     const formSchema = z.object({
         numero: z.string().min(1, "El número de actividad es requerido"),
@@ -54,7 +116,7 @@ const ActivityForm = () => {
 
   return (
     <Form {...form}>
-      <form /* onSubmit={form.handleSubmit(handleFormSubmit)} */ className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-6">
             <FormField
@@ -64,7 +126,7 @@ const ActivityForm = () => {
                 <FormItem>
                   <FormLabel>Número de Actividad</FormLabel>
                   <FormControl>
-                    <Input placeholder="ACT-2023-XXX" {...field} />
+                    <Input placeholder="AT23061234567" {...field} />
                   </FormControl>
                   <FormDescription>Identificador único de la actividad</FormDescription>
                   <FormMessage />
@@ -79,7 +141,7 @@ const ActivityForm = () => {
                 <FormItem>
                   <FormLabel>Contrato</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingresa el contrato" {...field} />
+                    <Input placeholder="Ejm: JL591230500123" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,9 +161,8 @@ const ActivityForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Factura">Factura</SelectItem>
-                      <SelectItem value="Orden de Compra">Orden de Compra</SelectItem>
-                      <SelectItem value="Contrato">Contrato</SelectItem>
+                      <SelectItem value="jma">JMA</SelectItem>
+                      <SelectItem value="gar">GAR</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -116,7 +177,7 @@ const ActivityForm = () => {
                 <FormItem>
                   <FormLabel>Proyecto</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingresa el proyecto" {...field} />
+                    <Input placeholder="Ingresa nombre del proyecto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,9 +193,9 @@ const ActivityForm = () => {
                 <FormItem>
                   <FormLabel>Monto Total</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingresa el monto" {...field} />
+                    <Input placeholder="Ingresa el monto S/PO" {...field} />
                   </FormControl>
-                  <FormDescription>Monto total de la actividad en MXN</FormDescription>
+                  <FormDescription>Monto total de la actividad en USD</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -200,8 +261,8 @@ const ActivityForm = () => {
           <FormLabel>Documentos Adjuntos</FormLabel>
           <div
             className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors"
-            /* onDragOver={handleDragOver}
-            onDrop={handleDrop} */
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
           >
             <div className="flex flex-col items-center justify-center space-y-2">
               <div className="rounded-full bg-primary/10 p-3">
@@ -240,7 +301,7 @@ const ActivityForm = () => {
             </div>
           </div>
 
-          {/* {adjuntos.length > 0 && (
+          {adjuntos.length > 0 && (
             <Card>
               <CardContent className="p-4">
                 <div className="flex flex-wrap gap-2">
@@ -262,7 +323,7 @@ const ActivityForm = () => {
                 </div>
               </CardContent>
             </Card>
-          )} */}
+          )}
         </div>
 
         <FormField
