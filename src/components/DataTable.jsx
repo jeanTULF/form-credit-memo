@@ -7,13 +7,13 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { formatCurrency, formatDate, generatePDF, getStatusColor } from '@/lib/utils';
 import { DetailsDialog } from './DetailsDialog';
 
-export const DataTable = ({ data, isLoading, columns, onActivitySelect }) => {
+export const DataTable = ({ filteredActivities, isLoading, columns, onActivitySelect }) => {
   const [page, setPage] = useState(1);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredActivities.length / itemsPerPage);
 
-  const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const paginatedData = filteredActivities.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -28,7 +28,7 @@ export const DataTable = ({ data, isLoading, columns, onActivitySelect }) => {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center p-4">Cargando facturas...</div>;
+    return <div className="flex justify-center p-4">Cargando actividades...</div>;
   }
 
   return (
@@ -69,7 +69,7 @@ export const DataTable = ({ data, isLoading, columns, onActivitySelect }) => {
                     <Button
                         variant="outline"
                         size="icon"
-                        // onClick={() => onActivitySelect(item)}
+                        /* onClick={() => onActivitySelect(item)} */
                         title="Eliminar"
                       >
                         <Trash2 className="h-4 w-4" />

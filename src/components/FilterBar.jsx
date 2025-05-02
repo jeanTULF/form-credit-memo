@@ -1,12 +1,20 @@
-import React from 'react'
+import { useState, useEffect } from "react"
+import { Search, Filter, X } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { Badge } from "@/components/ui/badge"
+import { formatDate } from "@/lib/utils"
 
-const FilterBar = () => {
+const FilterBar = ({activities, onFilter}) => {
 
-    const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
   const [selectedType, setSelectedType] = useState("")
   const [selectedProject, setSelectedProject] = useState("")
   const [selectedStatus, setSelectedStatus] = useState("")
-  const [dateRange, setDateRange] = useState({from, to})
+  /* const [dateRange, setDateRange] = useState({from, to}) */
 
   // Get unique values for filter dropdowns
   const types = [...new Set(activities.map((a) => a.tipo))]
@@ -16,7 +24,7 @@ const FilterBar = () => {
   // Apply filters
   useEffect(() => {
     // Skip the effect if no filter is applied yet
-    if (!searchTerm && !selectedType && !selectedProject && !selectedStatus && !dateRange.from && !dateRange.to) {
+    if (!searchTerm && !selectedType && !selectedProject && !selectedStatus /* && !dateRange.from && !dateRange.to */) {
       return
     }
 
@@ -49,30 +57,56 @@ const FilterBar = () => {
     }
 
     // Date range filter
-    if (dateRange.from) {
+   /*  if (dateRange.from) {
       filtered = filtered.filter((a) => new Date(a.fecha) >= dateRange.from)
     }
 
     if (dateRange.to) {
       filtered = filtered.filter((a) => new Date(a.fecha) <= dateRange.to)
-    }
+    } */
 
     onFilter(filtered)
-  }, [searchTerm, selectedType, selectedProject, selectedStatus, dateRange, onFilter])
+  }, [searchTerm, selectedType, selectedProject, selectedStatus,  /* dateRange */ onFilter])
 
   const clearFilters = () => {
     setSearchTerm("")
     setSelectedType("")
     setSelectedProject("")
     setSelectedStatus("")
-    setDateRange({ from: undefined, to: undefined })
+    // setDateRange({ from: undefined, to: undefined })
 
     // Reset to original activities
     onFilter(activities)
   }
 
+  const clearSearchTerm = () => {
+    setSearchTerm("")
+    onFilter(activities)
+  }
+  
+  const clearSelectedType = () => {
+    setSelectedType("")
+    onFilter(activities)
+  }
+  
+  const clearSelectedProject = () => {
+    setSelectedProject("")
+    onFilter(activities)
+  }
+  
+  const clearSelectedStatus = () => {
+    setSelectedStatus("")
+    onFilter(activities)
+  }
+  
+  /* const clearDateRange = () => {
+    setDateRange({ from: undefined, to: undefined })
+    onFilter(activities)
+  } */
+  
+
   const hasActiveFilters =
-    searchTerm || selectedType || selectedProject || selectedStatus || dateRange.from || dateRange.to
+    searchTerm || selectedType || selectedProject || selectedStatus /* dateRange.from || dateRange.to */
 
   return (
     <div className="space-y-4">
@@ -90,7 +124,7 @@ const FilterBar = () => {
               variant="ghost"
               size="icon"
               className="absolute right-0 top-0 h-9 w-9"
-              onClick={() => setSearchTerm("")}
+              onClick={clearFilters}
             >
               <X className="h-4 w-4" />
               <span className="sr-only">Limpiar búsqueda</span>
@@ -141,7 +175,7 @@ const FilterBar = () => {
             </SelectContent>
           </Select>
 
-          <Popover>
+          {/* <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="w-[180px] justify-start text-left font-normal">
                 <Filter className="mr-2 h-4 w-4" />
@@ -167,7 +201,7 @@ const FilterBar = () => {
                 numberOfMonths={2}
               />
             </PopoverContent>
-          </Popover>
+          </Popover> */}
         </div>
       </div>
 
@@ -178,7 +212,7 @@ const FilterBar = () => {
             {searchTerm && (
               <Badge variant="secondary" className="gap-1">
                 Búsqueda: {searchTerm}
-                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={() => setSearchTerm("")}>
+                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={clearSearchTerm}>
                   <X className="h-3 w-3" />
                   <span className="sr-only">Eliminar filtro</span>
                 </Button>
@@ -188,7 +222,7 @@ const FilterBar = () => {
             {selectedType && (
               <Badge variant="secondary" className="gap-1">
                 Tipo: {selectedType}
-                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={() => setSelectedType("")}>
+                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={clearSelectedType}>
                   <X className="h-3 w-3" />
                   <span className="sr-only">Eliminar filtro</span>
                 </Button>
@@ -198,7 +232,7 @@ const FilterBar = () => {
             {selectedProject && (
               <Badge variant="secondary" className="gap-1">
                 Proyecto: {selectedProject}
-                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={() => setSelectedProject("")}>
+                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={clearSelectedProject}>
                   <X className="h-3 w-3" />
                   <span className="sr-only">Eliminar filtro</span>
                 </Button>
@@ -208,14 +242,14 @@ const FilterBar = () => {
             {selectedStatus && (
               <Badge variant="secondary" className="gap-1">
                 Estado: {selectedStatus}
-                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={() => setSelectedStatus("")}>
+                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={clearSelectedStatus}>
                   <X className="h-3 w-3" />
                   <span className="sr-only">Eliminar filtro</span>
                 </Button>
               </Badge>
             )}
 
-            {(dateRange.from || dateRange.to) && (
+            {/* {(dateRange.from || dateRange.to) && (
               <Badge variant="secondary" className="gap-1">
                 Fechas: {dateRange.from ? formatDate(dateRange.from) : "..."} -{" "}
                 {dateRange.to ? formatDate(dateRange.to) : "..."}
@@ -229,7 +263,7 @@ const FilterBar = () => {
                   <span className="sr-only">Eliminar filtro</span>
                 </Button>
               </Badge>
-            )}
+            )} */}
 
             <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={clearFilters}>
               Limpiar todos

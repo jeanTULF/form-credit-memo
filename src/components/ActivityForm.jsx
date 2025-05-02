@@ -210,17 +210,31 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
-                        >
-                          {field.value ? format(field.value, "PPP", { locale: es }) : <span>Selecciona una fecha</span>}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
+                      <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value?.from ? (
+                              field.value.to ? (
+                                <>
+                                  {format(field.value.from, "LLL dd, y", { locale: es })} -{" "}
+                                  {format(field.value.to, "LLL dd, y", { locale: es })}
+                                </>
+                              ) : (
+                                format(field.value.from, "LLL dd, y", { locale: es })
+                              )
+                            ) : (
+                              <span>Selecciona una fecha</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                      <Calendar mode="range" selected={field.value} onSelect={field.onChange} initialFocus numberOfMonths={2} />
                     </PopoverContent>
                   </Popover>
                   <FormMessage />

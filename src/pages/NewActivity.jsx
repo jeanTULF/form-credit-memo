@@ -1,25 +1,19 @@
 import ActivityForm from '@/components/ActivityForm'
 import { toast } from "sonner"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useState } from 'react'
-import data from "@/data.json"
+import { useActivitiesStore } from '@/store/store'
 
 const NewActivity = () => {
 
-  const [activities, setActivities] = useState(data)
+  const addActivity = useActivitiesStore((state) => state.addActivity)
 
   const handleAddActivity = (newActivity) => {
-    const updatedActivities = [newActivity, ...activities]
-    setActivities(updatedActivities)
-    // setFilteredActivities(updatedActivities)
-
+    addActivity(newActivity)
     toast(`La actividad ${newActivity.numero} ha sido registrada exitosamente.`)
-
-    // setCurrentView("dashboard")
   }
   return (
     <div className="space-y-6 w-full flex flex-col p-10">
-      <h1 className="text-2xl font-bold tracking-tight self-center">Nueva Actividad</h1>
+      <h1 className="text-2xl font-bold tracking-tight self-center">New activity (Incentive)</h1>
       <Card>
         <CardHeader>
           <CardTitle>Registrar Nueva Actividad</CardTitle>
