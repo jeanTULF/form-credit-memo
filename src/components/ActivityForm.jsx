@@ -45,7 +45,7 @@ const ActivityForm = () => {
           proyecto: "",
           monto: "",
           fecha: new Date(),
-          estado: "Pendiente",
+          estado: "pending",
           adjuntos: [],
           notas: "",
         },
@@ -74,13 +74,26 @@ const ActivityForm = () => {
 
             <FormField
               control={form.control}
-              name="contrato"
+              name="fecha"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contrato</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ingresa el contrato" {...field} />
-                  </FormControl>
+                <FormItem className="flex flex-col">
+                  <FormLabel>Start Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn("w-[240px] justify-start text-left font-normal", !field.value && "text-muted-foreground")}
+                        >
+                          {field.value ? format(field.value, "PPP", { locale: es }) : <span>Selecciona una fecha</span>}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}
@@ -99,9 +112,10 @@ const ActivityForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Factura">Factura</SelectItem>
-                      <SelectItem value="Orden de Compra">Orden de Compra</SelectItem>
-                      <SelectItem value="Contrato">Contrato</SelectItem>
+                      <SelectItem value="jma">JMA</SelectItem>
+                      <SelectItem value="pp">Price protection</SelectItem>
+                      <SelectItem value="so">Sell Out</SelectItem>
+                      <SelectItem value="st">Sell True</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -134,24 +148,26 @@ const ActivityForm = () => {
                   <FormControl>
                     <Input placeholder="Ingresa el monto" {...field} />
                   </FormControl>
-                  <FormDescription>Monto total de la actividad en MXN</FormDescription>
+                  <FormDescription>Monto  de presupuesto total de la actividad</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+              
 
             <FormField
               control={form.control}
               name="fecha"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Fecha</FormLabel>
+                  <FormLabel>End Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant={"outline"}
-                          className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                          className={cn("w-[240px] justify-start text-left font-normal", !field.value && "text-muted-foreground")}
                         >
                           {field.value ? format(field.value, "PPP", { locale: es }) : <span>Selecciona una fecha</span>}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -180,10 +196,11 @@ const ActivityForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Pendiente">Pendiente</SelectItem>
-                      <SelectItem value="En Proceso">En Proceso</SelectItem>
-                      <SelectItem value="Completado">Completado</SelectItem>
-                      <SelectItem value="Cancelado">Cancelado</SelectItem>
+                      <SelectItem value="ongoing">Ongoing</SelectItem>
+                      <SelectItem value="pending">Confirmed pending payment from brand</SelectItem>
+                      <SelectItem value="complete">Complete</SelectItem>
+                      <SelectItem value="ended">Ended</SelectItem>
+                      <SelectItem value="paidShare">Paid share CM with client</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormDescription>Si seleccionas "Completado", el saldo pendiente será 0</FormDescription>

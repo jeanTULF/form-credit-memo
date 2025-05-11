@@ -19,12 +19,12 @@ const DashboardCards = () => {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Monto Total</CardTitle>
-            <CardDescription>Suma de todos los montos</CardDescription>
+            <CardTitle className="text-sm font-medium">Presupuesto Total</CardTitle>
+            <CardDescription>Suma de presupuesto aprovado</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-            {new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(
+            {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
                 data.reduce((sum, a) => sum + a.monto, 0),
               )}
             </div>
@@ -37,7 +37,9 @@ const DashboardCards = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              25
+            {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+                data.reduce((sum, a) => sum + a.saldo, 0),
+              )}
             </div>
           </CardContent>
         </Card>
@@ -48,7 +50,9 @@ const DashboardCards = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              25
+            {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+                data.reduce((sum, a) => sum + (a.monto - a.saldo), 0),
+              )}
             </div>
           </CardContent>
         </Card>

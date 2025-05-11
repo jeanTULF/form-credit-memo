@@ -7,11 +7,9 @@ const FilterActivities = () => {
 
     const columns = [
         "Activity N°",
-        "Contract N°",
         "Type",
         "Project Name",
         "S/PO Amount",
-        "Excecution Date",
         "status"
       ];
 

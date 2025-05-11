@@ -48,11 +48,9 @@ export const DataTable = ({ data, isLoading, columns, onActivitySelect }) => {
               paginatedData.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.numero}</TableCell>
-                  <TableCell>{item.contrato}</TableCell>
                   <TableCell>{item.tipo}</TableCell>
                   <TableCell>{item.proyecto}</TableCell>
                   <TableCell>{formatCurrency(item.monto)}</TableCell>
-                  <TableCell>{formatDate(item.fecha)}</TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(item.estado)}>{item.estado}</Badge>
                   </TableCell>

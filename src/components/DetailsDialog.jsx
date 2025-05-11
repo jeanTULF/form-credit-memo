@@ -46,10 +46,10 @@ export const DetailsDialog = ({ activity, onClose }) => {
                     <span className="text-sm font-medium">Proyecto:</span>
                     <span>{activity.proyecto}</span>
                   </div>
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <span className="text-sm font-medium">Fecha:</span>
                     <span>{formatDate(activity.fecha)}</span>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between">
                     <span className="text-sm font-medium">Estado:</span>
                     <Badge className={getStatusColor(activity.estado)}>{activity.estado}</Badge>
