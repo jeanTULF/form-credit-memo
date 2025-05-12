@@ -20,21 +20,26 @@ import { es } from "date-fns/locale"
 const ActivityForm = () => {
 
     const formSchema = z.object({
-        numero: z.string().min(1, "El número de actividad es requerido"),
-        contrato: z.string().min(1, "El contrato es requerido"),
-        tipo: z.string().min(1, "El tipo es requerido"),
-        proyecto: z.string().min(1, "El proyecto es requerido"),
-        monto: z
-          .string()
-          .min(1, "El monto es requerido")
-          .refine((val) => !isNaN(Number.parseFloat(val.replace(/,/g, ""))) && Number.parseFloat(val.replace(/,/g, "")) > 0, {
-            message: "El monto debe ser un número válido mayor a 0",
-          }),
-        fecha: z.date(),
-        estado: z.string().min(1, "El estado es requerido"),
-        adjuntos: z.array(z.string()).optional(),
-        notas: z.string().optional(),
-      })
+  numero: z.string().min(1, "Activity number is required"),
+  contrato: z.string().min(1, "Contract is required"),
+  tipo: z.string().min(1, "Type is required"),
+  proyecto: z.string().min(1, "Project is required"),
+  monto: z
+    .string()
+    .min(1, "Amount is required")
+    .refine(
+      (val) =>
+        !isNaN(Number.parseFloat(val.replace(/,/g, ""))) &&
+        Number.parseFloat(val.replace(/,/g, "")) > 0,
+      {
+        message: "Amount must be a valid number greater than 0",
+      }
+    ),
+  fecha: z.date(),
+  estado: z.string().min(1, "Status is required"),
+  adjuntos: z.array(z.string()).optional(),
+  notas: z.string().optional(),
+});
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -45,6 +50,7 @@ const ActivityForm = () => {
           proyecto: "",
           monto: "",
           fecha: new Date(),
+          creditMemo: "",
           estado: "pending",
           adjuntos: [],
           notas: "",
@@ -62,15 +68,17 @@ const ActivityForm = () => {
               name="numero"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Número de Actividad</FormLabel>
+                  <FormLabel>Activity number</FormLabel>
                   <FormControl>
                     <Input placeholder="ACT-2023-XXX" {...field} />
                   </FormControl>
-                  <FormDescription>Identificador único de la actividad</FormDescription>
+                  <FormDescription>Unique ID for the activity</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            
 
             <FormField
               control={form.control}
@@ -101,14 +109,29 @@ const ActivityForm = () => {
 
             <FormField
               control={form.control}
+              name="monto"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Amount Executed</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter the amount" {...field} />
+                  </FormControl>
+                  <FormDescription>Executed amount for this activity</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="tipo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tipo</FormLabel>
+                  <FormLabel>Type</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecciona un tipo" />
+                        <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -128,9 +151,9 @@ const ActivityForm = () => {
               name="proyecto"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Proyecto</FormLabel>
+                  <FormLabel>Client</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingresa el proyecto" {...field} />
+                    <Input placeholder="Enter the client name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,11 +167,11 @@ const ActivityForm = () => {
               name="monto"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Monto Total</FormLabel>
+                  <FormLabel>Budget Approved</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingresa el monto" {...field} />
+                    <Input placeholder="Enter the amount" {...field} />
                   </FormControl>
-                  <FormDescription>Monto  de presupuesto total de la actividad</FormDescription>
+                  <FormDescription>Total activity budget amount</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -185,10 +208,25 @@ const ActivityForm = () => {
 
             <FormField
               control={form.control}
+              name="proyecto"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Honor CM</FormLabel>
+                  <FormControl>
+                    <Input placeholder="EX: HK1234567" {...field} />
+                  </FormControl>
+                  <FormDescription>(optional)</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="estado"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Estado</FormLabel>
+                  <FormLabel>State</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -203,7 +241,7 @@ const ActivityForm = () => {
                       <SelectItem value="paidShare">Paid share CM with client</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription>Si seleccionas "Completado", el saldo pendiente será 0</FormDescription>
+                  <FormDescription>*Placeholder*</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -214,7 +252,7 @@ const ActivityForm = () => {
         <Separator />
 
         <div className="space-y-4">
-          <FormLabel>Documentos Adjuntos</FormLabel>
+          <FormLabel>Attached</FormLabel>
           <div
             className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors"
             /* onDragOver={handleDragOver}
@@ -224,8 +262,8 @@ const ActivityForm = () => {
               <div className="rounded-full bg-primary/10 p-3">
                 <Upload className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold">Arrastra tus documentos aquí</h3>
-              <p className="text-sm text-muted-foreground">O haz clic para seleccionar archivos</p>
+              <h3 className="text-lg font-semibold">Drop your files here</h3>
+              <p className="text-sm text-muted-foreground">Or click to select your file</p>
               <input
                 type="file"
                 id="file-upload"
@@ -252,7 +290,7 @@ const ActivityForm = () => {
                   document.getElementById("file-upload")?.click()
                 }}
               >
-                Seleccionar archivos
+                Select files
               </Button>
             </div>
           </div>
@@ -287,10 +325,10 @@ const ActivityForm = () => {
           name="notas"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notas Adicionales</FormLabel>
+              <FormLabel>Notes</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Ingresa cualquier información adicional relevante"
+                  placeholder="Enter any additional relevant information"
                   className="resize-none"
                   {...field}
                 />
@@ -302,9 +340,9 @@ const ActivityForm = () => {
 
         <div className="flex justify-end gap-4">
           <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Cancelar
+            Cancel
           </Button>
-          <Button type="submit">Guardar Actividad</Button>
+          <Button type="submit">Add new activity</Button>
         </div>
       </form>
     </Form>
