@@ -17,22 +17,22 @@ const items = [
       icon: Home,
     },
     {
-      title: "Nueva actividad",
+      title: "New Activity (JMA)",
       url: "/new-activity",
       icon: NotepadText
     },
     {
-      title: "Aplicar pago",
+      title: "Apply payment",
       url: "/payments",
       icon: HandCoins
     },
     {
-      title: "Subir archivo",
+      title: "Upload file",
       url: "#",
       icon: FileUp,
     },
     {
-      title: "Reportes",
+      title: "Reports",
       url: "#",
       icon: FileText,
     },
@@ -78,13 +78,13 @@ const AppSidebar = () => {
               <SidebarMenuItem >
                 <SidebarMenuButton className="cursor-pointer">
                   <User className="h-4 w-4 mr-3" />
-                  <span>Mi Perfil</span>
+                  <span>My profile</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
               <SidebarMenuButton className="cursor-pointer">
                   <LogOut className="h-4 w-4 mr-3" />
-                  <span>Cerrar Sesión</span>
+                  <span>Log out</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

@@ -123,7 +123,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
   // Apply all payments
   const handleApplyPayment = () => {
     if (!sourceActivityId) {
-      alert("Por favor seleccione una actividad origen.")
+      alert("Please select a source activity.")
       return
     }
 
@@ -133,7 +133,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
     ) */
 
     if (!isValid || distributions.length === 0) {
-      alert("Por favor complete todos los campos requeridos para cada pago.")
+      alert("Please complete all required fields for each payment.")
       return
     }
 
@@ -160,14 +160,14 @@ import { formatCurrency, formatDate } from "@/lib/utils"
   /* const applicableActivities = activities.filter((a) => a.saldo > 0) */
   return (
     <div className='flex flex-col p-10 w-full gap-8'>
-      <h1 className="text-2xl font-bold tracking-tight self-center">Aplicación de Pagos</h1>
+      <h1 className="text-2xl font-bold tracking-tight self-center">Payment apply</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Aplicar Nuevo Pago</CardTitle>
-              <CardDescription>Seleccione una actividad origen y distribuya el pago</CardDescription>
+              <CardTitle>Apply new jma payment</CardTitle>
+              <CardDescription>Select a source activity and distribute the payment.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -209,7 +209,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
 
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="referencia">Referencia de Pago</Label>
+                    <Label htmlFor="referencia">Payment inv. reference</Label>
                     <Input
                       id="referencia"
                       value={referencia}
@@ -219,16 +219,14 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                   </div>
 
                   <div>
-                    <Label htmlFor="metodo">Método de Pago</Label>
+                    <Label htmlFor="metodo">Payment method</Label>
                     <Select value={metodo} onValueChange={setMetodo}>
                       <SelectTrigger id="metodo">
                         <SelectValue placeholder="Seleccionar método" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Transferencia">Transferencia</SelectItem>
-                        <SelectItem value="Cheque">Cheque</SelectItem>
-                        <SelectItem value="Efectivo">Efectivo</SelectItem>
-                        <SelectItem value="Tarjeta">Tarjeta</SelectItem>
+                        <SelectItem value="Transferencia">ACH</SelectItem>
+                        <SelectItem value="Cheque">Credit memo</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -239,8 +237,8 @@ import { formatCurrency, formatDate } from "@/lib/utils"
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium">Distribución de Pago</h3>
-                  <p className="text-sm text-muted-foreground">Monto disponible: {formatCurrency(availableAmount)}</p>
+                  <h3 className="text-sm font-medium">Payment distribution</h3>
+                  <p className="text-sm text-muted-foreground">Available: {formatCurrency(availableAmount)}</p>
                 </div>
                 <Button
                   type="button"
@@ -248,7 +246,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                   onClick={addDistribution}
                   disabled={!sourceActivity || availableAmount <= 0}
                 >
-                  <Plus className="h-4 w-4 mr-1" /> Agregar Distribución
+                  <Plus className="h-4 w-4 mr-1" /> Add distribution
                 </Button>
               </div>
 
@@ -258,7 +256,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                     <Card key={index}>
                       <CardContent className="p-4">
                         <div className="flex justify-between items-start mb-4">
-                          <h4 className="text-sm font-medium">Distribución #{index + 1}</h4>
+                          <h4 className="text-sm font-medium">Distribution #{index + 1}</h4>
                           <Button type="button" variant="ghost" size="sm" onClick={() => removeDistribution(index)}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -266,7 +264,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <Label htmlFor={`activity-${index}`}>Actividad Destino</Label>
+                            <Label htmlFor={`activity-${index}`}>Target Activity</Label>
                             <Select
                               value={distribution.activityId}
                               onValueChange={(value) => updateDistribution(index, "activityId", value)}
@@ -285,7 +283,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                           </div>
 
                           <div>
-                            <Label htmlFor={`amount-${index}`}>Monto a Aplicar</Label>
+                            <Label htmlFor={`amount-${index}`}>Amount to apply</Label>
                             <Input
                               id={`amount-${index}`}
                               type="number"
@@ -300,7 +298,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                           </div>
 
                           <div className="md:col-span-2">
-                            <Label htmlFor={`notes-${index}`}>Notas</Label>
+                            <Label htmlFor={`notes-${index}`}>Notes</Label>
                             <Textarea
                               id={`notes-${index}`}
                               value={distribution.notas}
@@ -327,7 +325,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                       disabled={distributions.length === 0 || totalDistributed === 0}
                     >
                       <DollarSign className="h-4 w-4 mr-2" />
-                      Aplicar Pagos
+                      Apply
                     </Button>
                   </div>
                 </div>
@@ -345,8 +343,8 @@ import { formatCurrency, formatDate } from "@/lib/utils"
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Pagos Recientes</CardTitle>
-              <CardDescription>Últimos pagos registrados en el sistema</CardDescription>
+              <CardTitle>Last payments</CardTitle>
+              <CardDescription>Recent Payments Recorded</CardDescription>
             </CardHeader>
             <CardContent>
               {recentPayments.length > 0 ? (
@@ -369,7 +367,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-6 text-muted-foreground">No hay pagos registrados en el sistema</div>
+                <div className="text-center py-6 text-muted-foreground">No payments recorded</div>
               )}
             </CardContent>
           </Card>

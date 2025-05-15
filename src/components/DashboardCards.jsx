@@ -10,8 +10,8 @@ const DashboardCards = () => {
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Actividades</CardTitle>
-            <CardDescription>Número total de actividades</CardDescription>
+            <CardTitle className="text-sm font-medium">Total Records Entered</CardTitle>
+            <CardDescription>Join Marketing total</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.length}</div>
@@ -19,8 +19,8 @@ const DashboardCards = () => {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Monto Total</CardTitle>
-            <CardDescription>Suma de todos los montos</CardDescription>
+            <CardTitle className="text-sm font-medium">S/PO Total amount</CardTitle>
+            <CardDescription>Total S/PO Amount</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -32,8 +32,8 @@ const DashboardCards = () => {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Saldo Pendiente</CardTitle>
-            <CardDescription>Total por pagar</CardDescription>
+            <CardTitle className="text-sm font-medium">Not applied</CardTitle>
+            <CardDescription>Not applied amount</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -45,8 +45,8 @@ const DashboardCards = () => {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Monto Pagado</CardTitle>
-            <CardDescription>Total pagado</CardDescription>
+            <CardTitle className="text-sm font-medium">Total applied</CardTitle>
+            <CardDescription>Total pay amount</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">

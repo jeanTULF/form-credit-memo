@@ -13,11 +13,11 @@ const NewActivity = () => {
   }
   return (
     <div className="space-y-6 w-full flex flex-col p-10">
-      <h1 className="text-2xl font-bold tracking-tight self-center">New activity (Incentive)</h1>
+      <h1 className="text-2xl font-bold tracking-tight self-center">New activity (Join marketing)</h1>
       <Card>
         <CardHeader>
-          <CardTitle>Registrar Nueva Actividad</CardTitle>
-          <CardDescription>Completa el formulario para registrar una nueva actividad en el sistema</CardDescription>
+          <CardTitle>Register New Activity</CardTitle>
+          <CardDescription>Fill out the form to register a new activity in the system</CardDescription>
         </CardHeader>
         <CardContent>
           <ActivityForm onSubmit={handleAddActivity} /> 

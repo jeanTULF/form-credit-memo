@@ -82,21 +82,21 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
   }
 
     const formSchema = z.object({
-        numero: z.string().min(1, "El número de actividad es requerido"),
-        contrato: z.string().min(1, "El contrato es requerido"),
-        tipo: z.string().min(1, "El tipo es requerido"),
-        proyecto: z.string().min(1, "El proyecto es requerido"),
-        monto: z
-          .string()
-          .min(1, "El monto es requerido")
-          .refine((val) => !isNaN(Number.parseFloat(val.replace(/,/g, ""))) && Number.parseFloat(val.replace(/,/g, "")) > 0, {
-            message: "El monto debe ser un número válido mayor a 0",
-          }),
-        fecha: z.date(),
-        estado: z.string().min(1, "El estado es requerido"),
-        adjuntos: z.array(z.string()).optional(),
-        notas: z.string().optional(),
-      })
+      numero: z.string().min(1, "El número de actividad es requerido"),
+      contrato: z.string().min(1, "El contrato es requerido"),
+      tipo: z.string().min(1, "El tipo es requerido"),
+      proyecto: z.string().min(1, "El proyecto es requerido"),
+      monto: z
+        .string()
+        .min(1, "El monto es requerido")
+        .refine((val) => !isNaN(Number.parseFloat(val.replace(/,/g, ""))) && Number.parseFloat(val.replace(/,/g, "")) > 0, {
+          message: "El monto debe ser un número válido mayor a 0",
+        }),
+      fecha: z.date(),
+      estado: z.string().min(1, "El estado es requerido"),
+      adjuntos: z.array(z.string()).optional(),
+      notas: z.string().optional(),
+    })
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -124,11 +124,11 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
               name="numero"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Número de Actividad</FormLabel>
+                  <FormLabel>Activity number</FormLabel>
                   <FormControl>
                     <Input placeholder="AT23061234567" {...field} />
                   </FormControl>
-                  <FormDescription>Identificador único de la actividad</FormDescription>
+                  <FormDescription>Unique ID for activity</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -139,7 +139,7 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
               name="contrato"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contrato</FormLabel>
+                  <FormLabel>Contract</FormLabel>
                   <FormControl>
                     <Input placeholder="Ejm: JL591230500123" {...field} />
                   </FormControl>
@@ -153,11 +153,11 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
               name="tipo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tipo</FormLabel>
+                  <FormLabel>Type</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecciona un tipo" />
+                        <SelectValue placeholder="Select one type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -175,9 +175,9 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
               name="proyecto"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Proyecto</FormLabel>
+                  <FormLabel>Project name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingresa nombre del proyecto" {...field} />
+                    <Input placeholder="Online Promotion - Social Media Adv." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -191,11 +191,11 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
               name="monto"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Monto Total</FormLabel>
+                  <FormLabel>Total amount</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingresa el monto S/PO" {...field} />
+                    <Input placeholder="$31030.00" {...field} />
                   </FormControl>
-                  <FormDescription>Monto total de la actividad en USD</FormDescription>
+                  <FormDescription>Activity total amount in USD</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -206,35 +206,21 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
               name="fecha"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Fecha</FormLabel>
+                  <FormLabel>Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
-                      <Button
-                            variant="outline"
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value?.from ? (
-                              field.value.to ? (
-                                <>
-                                  {format(field.value.from, "LLL dd, y", { locale: es })} -{" "}
-                                  {format(field.value.to, "LLL dd, y", { locale: es })}
-                                </>
-                              ) : (
-                                format(field.value.from, "LLL dd, y", { locale: es })
-                              )
-                            ) : (
-                              <span>Selecciona una fecha</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
+                        <Button
+                          variant={"outline"}
+                          className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                        >
+                          {field.value ? format(field.value, "PPP", { locale: es }) : <span>Select a date</span>}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar mode="range" selected={field.value} onSelect={field.onChange} initialFocus numberOfMonths={2} />
+                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
                     </PopoverContent>
                   </Popover>
                   <FormMessage />
@@ -247,21 +233,21 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
               name="estado"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Estado</FormLabel>
+                  <FormLabel>Status</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecciona un estado" />
+                        <SelectValue placeholder="Status select" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Pendiente">Pendiente</SelectItem>
-                      <SelectItem value="En Proceso">En Proceso</SelectItem>
-                      <SelectItem value="Completado">Completado</SelectItem>
-                      <SelectItem value="Cancelado">Cancelado</SelectItem>
+                      <SelectItem value="Pendiente">Pending</SelectItem>
+                      <SelectItem value="En Proceso">Processing</SelectItem>
+                      <SelectItem value="Completado">Complete</SelectItem>
+                      <SelectItem value="Cancelado">Executed</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription>Si seleccionas "Completado", el saldo pendiente será 0</FormDescription>
+                  <FormDescription>Si seleccionas "(placeholder)", el saldo pendiente será 0</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -272,7 +258,7 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
         <Separator />
 
         <div className="space-y-4">
-          <FormLabel>Documentos Adjuntos</FormLabel>
+          <FormLabel>Attached files</FormLabel>
           <div
             className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors"
             onDragOver={handleDragOver}
@@ -282,8 +268,8 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
               <div className="rounded-full bg-primary/10 p-3">
                 <Upload className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold">Arrastra tus documentos aquí</h3>
-              <p className="text-sm text-muted-foreground">O haz clic para seleccionar archivos</p>
+              <h3 className="text-lg font-semibold">Drop your files here</h3>
+              <p className="text-sm text-muted-foreground">Or click here to open explorer</p>
               <input
                 type="file"
                 id="file-upload"
@@ -310,7 +296,7 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
                   document.getElementById("file-upload")?.click()
                 }}
               >
-                Seleccionar archivos
+                Select files
               </Button>
             </div>
           </div>
@@ -330,7 +316,7 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
                         onClick={() => handleRemoveAdjunto(index)}
                       >
                         <X className="h-3 w-3" />
-                        <span className="sr-only">Eliminar</span>
+                        <span className="sr-only">Delete</span>
                       </Button>
                     </Badge>
                   ))}
@@ -345,10 +331,10 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
           name="notas"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notas Adicionales</FormLabel>
+              <FormLabel>Observations</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Ingresa cualquier información adicional relevante"
+                  placeholder="Enter any extra additional information"
                   className="resize-none"
                   {...field}
                 />
@@ -360,9 +346,9 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
 
         <div className="flex justify-end gap-4">
           <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Cancelar
+            Cancel
           </Button>
-          <Button type="submit">Guardar Actividad</Button>
+          <Button type="submit">Add activity</Button>
         </div>
       </form>
     </Form>

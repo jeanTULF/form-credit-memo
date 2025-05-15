@@ -139,7 +139,7 @@ const FilterBar = ({activities, onFilter}) => {
         <div className="flex flex-wrap gap-2">
           <Select value={selectedType} onValueChange={setSelectedType}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Tipo" />
+              <SelectValue placeholder="Type" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos los tipos</SelectItem>
@@ -153,7 +153,7 @@ const FilterBar = ({activities, onFilter}) => {
 
           <Select value={selectedProject} onValueChange={setSelectedProject}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Proyecto" />
+              <SelectValue placeholder="Project" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos los proyectos</SelectItem>
@@ -167,7 +167,7 @@ const FilterBar = ({activities, onFilter}) => {
 
           <Select value={selectedStatus} onValueChange={setSelectedStatus}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Estado" />
+              <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos los estados</SelectItem>
@@ -211,14 +211,14 @@ const FilterBar = ({activities, onFilter}) => {
 
       {hasActiveFilters && (
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Filtros activos:</span>
+          <span className="text-sm text-muted-foreground">Active filters:</span>
           <div className="flex flex-wrap gap-2">
             {searchTerm && (
               <Badge variant="secondary" className="gap-1">
                 Búsqueda: {searchTerm}
                 <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={clearSearchTerm}>
                   <X className="h-3 w-3" />
-                  <span className="sr-only">Eliminar filtro</span>
+                  <span className="sr-only">Delete filter</span>
                 </Button>
               </Badge>
             )}
@@ -228,7 +228,7 @@ const FilterBar = ({activities, onFilter}) => {
                 Tipo: {selectedType}
                 <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={clearSelectedType}>
                   <X className="h-3 w-3" />
-                  <span className="sr-only">Eliminar filtro</span>
+                  <span className="sr-only">Delete filter</span>
                 </Button>
               </Badge>
             )}
@@ -238,7 +238,7 @@ const FilterBar = ({activities, onFilter}) => {
                 Proyecto: {selectedProject}
                 <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={clearSelectedProject}>
                   <X className="h-3 w-3" />
-                  <span className="sr-only">Eliminar filtro</span>
+                  <span className="sr-only">Delete filter</span>
                 </Button>
               </Badge>
             )}
@@ -248,7 +248,7 @@ const FilterBar = ({activities, onFilter}) => {
                 Estado: {selectedStatus}
                 <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={clearSelectedStatus}>
                   <X className="h-3 w-3" />
-                  <span className="sr-only">Eliminar filtro</span>
+                  <span className="sr-only">Delete filter</span>
                 </Button>
               </Badge>
             )}
@@ -270,7 +270,7 @@ const FilterBar = ({activities, onFilter}) => {
             )} */}
 
             <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={clearFilters}>
-              Limpiar todos
+              Clear all
             </Button>
           </div>
         </div>

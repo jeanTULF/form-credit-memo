@@ -24,7 +24,7 @@ const Header = ({ userName = "Jean", userRole= "Admin" }) => {
 
           <div className="flex items-center gap-4">
             <div className="hidden md:flex md:flex-col md:items-end">
-              <div className="text-sm font-medium">¡Bienvenido, {userName}!</div>
+              <div className="text-sm font-medium">Welcome, {userName}!</div>
               <div className="text-xs text-muted-foreground">{userRole}</div>
             </div>
             <Avatar>
