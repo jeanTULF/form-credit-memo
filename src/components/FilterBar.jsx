@@ -24,7 +24,11 @@ const FilterBar = ({activities, onFilter}) => {
   // Apply filters
   useEffect(() => {
     // Skip the effect if no filter is applied yet
-    if (!searchTerm && !selectedType && !selectedProject && !selectedStatus /* && !dateRange.from && !dateRange.to */) {
+    if (!searchTerm && 
+        !selectedType && 
+        !selectedProject && 
+        !selectedStatus /* && 
+        !dateRange.from && !dateRange.to */) {
       return
     }
 
@@ -66,7 +70,7 @@ const FilterBar = ({activities, onFilter}) => {
     } */
 
     onFilter(filtered)
-  }, [searchTerm, selectedType, selectedProject, selectedStatus,  /* dateRange */ onFilter])
+  }, [searchTerm, selectedType, selectedProject, selectedStatus, /* dateRange */ ])
 
   const clearFilters = () => {
     setSearchTerm("")

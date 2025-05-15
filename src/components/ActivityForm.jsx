@@ -161,8 +161,8 @@ const ActivityForm = ({onSubmit, existingActivities}) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="jma">JMA</SelectItem>
-                      <SelectItem value="gar">GAR</SelectItem>
+                      <SelectItem value="JMA">JMA</SelectItem>
+                      <SelectItem value="GAR">GAR</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
