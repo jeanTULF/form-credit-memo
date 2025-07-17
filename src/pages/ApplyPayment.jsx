@@ -11,11 +11,16 @@ import { Separator } from "@/components/ui/separator"
 import { Plus, Trash2, DollarSign } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { formatCurrency, formatDate } from "@/lib/utils"
+import { useActivitiesStore } from "@/store/store"
+import { toast } from "sonner"
 
 
 
 
- function ApplyPayment({ activities, onApplyPayment }) {
+ const ApplyPayment = () => {
+
+  const activities = useActivitiesStore((state) => state.activities)
+  const applyPayment = useActivitiesStore((state) => state.applyPayment)
   const [sourceActivityId, setSourceActivityId] = useState("")
   const [sourceActivity, setSourceActivity] = useState(null)
   const [availableAmount, setAvailableAmount] = useState(0)
@@ -25,10 +30,10 @@ import { formatCurrency, formatDate } from "@/lib/utils"
   const [recentPayments, setRecentPayments] = useState([])
 
   // Filter activities with saldo > 0 for source selection
-  /* const activitiesWithSaldo = activities.filter((a) => a.saldo > 0) */
+  const activitiesWithSaldo = activities.filter((a) => a.saldo > 0)
 
   // Update source activity when selection changes
- /*  useEffect(() => {
+  useEffect(() => {
     if (sourceActivityId) {
       const activity = activities.find((a) => a.id === sourceActivityId) || null
       setSourceActivity(activity)
@@ -43,10 +48,10 @@ import { formatCurrency, formatDate } from "@/lib/utils"
       setSourceActivity(null)
       setAvailableAmount(0)
     }
-  }, [sourceActivityId, activities]) */
+  }, [sourceActivityId, activities])
 
   // Generate recent payments list
-  /* useEffect(() => {
+  useEffect(() => {
     const allPayments = []
 
     activities.forEach((activity) => {
@@ -66,7 +71,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
       .slice(0, 10)
 
     setRecentPayments(sorted)
-  }, [activities]) */
+  }, [activities])
 
   // Add a new payment distribution
   const addDistribution = () => {
@@ -128,16 +133,16 @@ import { formatCurrency, formatDate } from "@/lib/utils"
     }
 
     // Validate that all distributions have an activity selected and amount > 0
-    /* const isValid = distributions.every(
+    const isValid = distributions.every(
       (d) => d.activityId && d.monto > 0 && d.referencia.trim() !== "" && d.metodo.trim() !== "",
-    ) */
+    )
 
     if (!isValid || distributions.length === 0) {
       alert("Please complete all required fields for each payment.")
       return
     }
 
-    onApplyPayment(sourceActivityId, distributions)
+    applyPayment(sourceActivityId, distributions)
 
     // Reset form after successful payment
     setDistributions([])
@@ -151,13 +156,14 @@ import { formatCurrency, formatDate } from "@/lib/utils"
         setSourceActivity(updatedSourceActivity)
       }
     }
+    toast("Payment applied successfully")
   }
 
   // Calculate total amount being distributed
   const totalDistributed = distributions.reduce((sum, d) => sum + d.monto, 0)
 
   // Filter activities that have saldo > 0 for target selection
-  /* const applicableActivities = activities.filter((a) => a.saldo > 0) */
+  const applicableActivities = activities.filter((a) => a.saldo > 0)
   return (
     <div className='flex flex-col p-10 w-full gap-8'>
       <h1 className="text-2xl font-bold tracking-tight self-center">Payment apply</h1>
@@ -178,7 +184,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                       <SelectValue placeholder="Seleccionar actividad con saldo" />
                     </SelectTrigger>
                     <SelectContent>
-                      {/* {activitiesWithSaldo.length > 0 ? (
+                      {activitiesWithSaldo.length > 0 ? (
                         activitiesWithSaldo.map((activity) => (
                           <SelectItem key={activity.id} value={activity.id}>
                             {activity.numero} - {activity.contrato} ({formatCurrency(activity.saldo)})
@@ -188,7 +194,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                         <SelectItem value="none" disabled>
                           No hay actividades con saldo disponible
                         </SelectItem>
-                      )} */}
+                      )}
                     </SelectContent>
                   </Select>
 
@@ -225,8 +231,8 @@ import { formatCurrency, formatDate } from "@/lib/utils"
                         <SelectValue placeholder="Seleccionar método" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Transferencia">ACH</SelectItem>
-                        <SelectItem value="Cheque">Credit memo</SelectItem>
+                        <SelectItem value="ACH">ACH</SelectItem>
+                        <SelectItem value="CM">Credit memo</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -341,7 +347,7 @@ import { formatCurrency, formatDate } from "@/lib/utils"
         </div>
 
         <div>
-          <Card>
+          <Card className="h-screen overflow-auto">
             <CardHeader>
               <CardTitle>Last payments</CardTitle>
               <CardDescription>Recent Payments Recorded</CardDescription>

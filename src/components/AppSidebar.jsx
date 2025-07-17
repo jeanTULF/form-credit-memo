@@ -9,6 +9,8 @@ from "@/components/ui/sidebar";
 import { FileText, FileUp, HandCoins, Home, LogOut, NotepadText, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
+import { useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 const items = [
     {
@@ -28,17 +30,22 @@ const items = [
     },
     {
       title: "Upload file",
-      url: "#",
+      url: "/upload-file",
       icon: FileUp,
     },
     {
       title: "Reports",
-      url: "#",
+      url: "/reports",
       icon: FileText,
     },
   ]
 
 const AppSidebar = () => {
+  const location = useLocation(); 
+  const pathname = location.pathname;
+
+
+
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col items-center justify-center py-4">
@@ -48,17 +55,21 @@ const AppSidebar = () => {
           </div>
         </SidebarHeader>
       <SidebarContent>
-        <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild /* isActive={} */>
+        <SidebarMenu className='px-3.5'>
+          {items.map((item) => {
+              const isActive = item.url === pathname || pathname.startsWith(`${item.url}/`)
+              return (
+            <SidebarMenuItem key={item.title} >
+              <SidebarMenuButton asChild /* isActive={} */ className={cn('transition-all duration-200 text-gray-600 hover:text-[#f59e0b] hover:bg-gray-50 text-base', {'text-amber-500 bg-amber-50 hover:bg-amber-100' : isActive})}>
                 <a href={item.url}>
                     <item.icon />
                     {item.title}
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          ))}
+              )
+          })}
+
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="border-t">
