@@ -21,9 +21,7 @@ export function formatDate(date) {
 }
 
 export const generatePDF = (item) => {
-  // En una implementación real, aquí se generaría el PDF
-  console.log("Generando PDF para la actividad:", item)
-  alert(`Se está generando el PDF para la actividad ${item.numero}`)
+  
 }
 
 export const getStatusColor = (status) => {

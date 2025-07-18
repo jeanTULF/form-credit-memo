@@ -26,7 +26,7 @@ import { toast } from "sonner"
   const [availableAmount, setAvailableAmount] = useState(0)
   const [distributions, setDistributions] = useState([])
   const [referencia, setReferencia] = useState(`VM.Inv-${Date.now().toString().slice(-6)}`)
-  const [metodo, setMetodo] = useState("Transferencia")
+  const [metodo, setMetodo] = useState("ACH")
   const [recentPayments, setRecentPayments] = useState([])
 
   // Filter activities with saldo > 0 for source selection

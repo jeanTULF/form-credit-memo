@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { FileText, Download, Paperclip, HandCoins } from "lucide-react"
 import { formatCurrency, formatDate, generatePDF, getStatusColor } from "@/lib/utils"
 import { useNavigate } from "react-router-dom"
+import { CreatePDF } from "./PDF/CreatePDF"
 
 export const DetailsDialog = ({ activity, onClose }) => {
 
@@ -175,9 +176,8 @@ export const DetailsDialog = ({ activity, onClose }) => {
           <Button variant="outline" onClick={onClose} >
             Cerrar
           </Button>
-          <Button onClick={() => generatePDF(activity)} className="gap-2">
+          <Button onClick={() => generatePDF()} className="gap-2">
             <FileText className="h-4 w-4" />
-            Generar PDF
           </Button>
         </DialogFooter>
       </DialogContent>
