@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import { Navigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs) {
@@ -21,7 +22,7 @@ export function formatDate(date) {
 }
 
 export const generatePDF = (item) => {
-  
+    Navigate('/CreatePDF')
 }
 
 export const getStatusColor = (status) => {

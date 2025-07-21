@@ -1,9 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card, CardContent, CardDescription, CardHeader, CardTitle
+} from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -14,35 +18,25 @@ import { formatCurrency, formatDate } from "@/lib/utils"
 import { useActivitiesStore } from "@/store/store"
 import { toast } from "sonner"
 
-
-
-
- const ApplyPayment = () => {
-
+const ApplyPayment = () => {
   const activities = useActivitiesStore((state) => state.activities)
   const applyPayment = useActivitiesStore((state) => state.applyPayment)
+
   const [sourceActivityId, setSourceActivityId] = useState("")
   const [sourceActivity, setSourceActivity] = useState(null)
   const [availableAmount, setAvailableAmount] = useState(0)
   const [distributions, setDistributions] = useState([])
-  const [referencia, setReferencia] = useState(`VM.Inv-${Date.now().toString().slice(-6)}`)
+  const [referenciaBase, setReferenciaBase] = useState(`VM.Inv-${Date.now().toString().slice(-6)}`)
   const [metodo, setMetodo] = useState("ACH")
   const [recentPayments, setRecentPayments] = useState([])
 
-  // Filter activities with saldo > 0 for source selection
   const activitiesWithSaldo = activities.filter((a) => a.saldo > 0)
 
-  // Update source activity when selection changes
   useEffect(() => {
     if (sourceActivityId) {
       const activity = activities.find((a) => a.id === sourceActivityId) || null
       setSourceActivity(activity)
-      if (activity) {
-        setAvailableAmount(activity.saldo)
-      } else {
-        setAvailableAmount(0)
-      }
-      // Reset distributions when source changes
+      setAvailableAmount(activity ? activity.saldo : 0)
       setDistributions([])
     } else {
       setSourceActivity(null)
@@ -50,46 +44,34 @@ import { toast } from "sonner"
     }
   }, [sourceActivityId, activities])
 
-  // Generate recent payments list
   useEffect(() => {
     const allPayments = []
-
     activities.forEach((activity) => {
-      if (activity.pagos && activity.pagos.length > 0) {
+      if (activity.pagos?.length > 0) {
         activity.pagos.forEach((payment) => {
-          allPayments.push({
-            activity,
-            payment,
-          })
+          allPayments.push({ activity, payment })
         })
       }
     })
-
-    // Sort by date (most recent first) and take the 10 most recent
     const sorted = allPayments
       .sort((a, b) => new Date(b.payment.fecha).getTime() - new Date(a.payment.fecha).getTime())
       .slice(0, 10)
-
     setRecentPayments(sorted)
   }, [activities])
 
-  // Add a new payment distribution
   const addDistribution = () => {
     if (!sourceActivity || availableAmount <= 0) return
-
     setDistributions([
       ...distributions,
       {
-        activityId: "",
         monto: 0,
-        referencia: referencia,
-        metodo: metodo,
+        referencia: referenciaBase,
+        metodo,
         notas: "",
       },
     ])
   }
 
-  // Remove a payment distribution
   const removeDistribution = (index) => {
     const newDistributions = [...distributions]
     const removedAmount = newDistributions[index].monto
@@ -98,19 +80,13 @@ import { toast } from "sonner"
     setAvailableAmount(availableAmount + removedAmount)
   }
 
-  // Update a payment distribution
   const updateDistribution = (index, field, value) => {
     const newDistributions = [...distributions]
-
-    // If updating the amount, calculate the difference and update available amount
     if (field === "monto") {
       const oldAmount = newDistributions[index].monto
-      const newAmount = typeof value === "string" ? Number.parseFloat(value) : value
-
-      // Validate that the new amount doesn't exceed available amount
+      const newAmount = typeof value === "string" ? parseFloat(value) || 0 : value
       const difference = newAmount - oldAmount
       if (difference > availableAmount) {
-        // If exceeds, set to maximum available
         newDistributions[index].monto = oldAmount + availableAmount
         setAvailableAmount(0)
       } else {
@@ -118,52 +94,39 @@ import { toast } from "sonner"
         setAvailableAmount(availableAmount - difference)
       }
     } else {
-      // @ts-ignore - We know the field exists
       newDistributions[index][field] = value
     }
-
     setDistributions(newDistributions)
   }
 
-  // Apply all payments
   const handleApplyPayment = () => {
     if (!sourceActivityId) {
-      alert("Please select a source activity.")
+      alert("Seleccione una actividad origen.")
       return
     }
-
-    // Validate that all distributions have an activity selected and amount > 0
     const isValid = distributions.every(
-      (d) => d.activityId && d.monto > 0 && d.referencia.trim() !== "" && d.metodo.trim() !== "",
+      (d) => d.monto > 0 && d.referencia.trim() !== "" && d.metodo.trim() !== ""
     )
-
     if (!isValid || distributions.length === 0) {
-      alert("Please complete all required fields for each payment.")
+      alert("Complete todos los campos de las distribuciones.")
       return
     }
 
     applyPayment(sourceActivityId, distributions)
-
-    // Reset form after successful payment
-    setDistributions([])
-    setReferencia(`VM.Inv-${Date.now().toString().slice(-6)}`)
-
-    // Update available amount
-    if (sourceActivity) {
-      const updatedSourceActivity = activities.find((a) => a.id === sourceActivityId)
-      if (updatedSourceActivity) {
-        setAvailableAmount(updatedSourceActivity.saldo)
-        setSourceActivity(updatedSourceActivity)
-      }
-    }
     toast("Payment applied successfully")
+
+    setDistributions([])
+    setReferenciaBase(`VM.Inv-${Date.now().toString().slice(-6)}`)
+
+    const updatedSource = activities.find((a) => a.id === sourceActivityId)
+    if (updatedSource) {
+      setAvailableAmount(updatedSource.saldo)
+      setSourceActivity(updatedSource)
+    }
   }
 
-  // Calculate total amount being distributed
   const totalDistributed = distributions.reduce((sum, d) => sum + d.monto, 0)
 
-  // Filter activities that have saldo > 0 for target selection
-  const applicableActivities = activities.filter((a) => a.saldo > 0)
   return (
     <div className='flex flex-col p-10 w-full gap-8'>
       <h1 className="text-2xl font-bold tracking-tight self-center">Payment apply</h1>
@@ -173,8 +136,9 @@ import { toast } from "sonner"
           <Card>
             <CardHeader>
               <CardTitle>Apply new jma payment</CardTitle>
-              <CardDescription>Select a source activity and distribute the payment.</CardDescription>
+              <CardDescription>Seleccione una actividad y aplique múltiples distribuciones.</CardDescription>
             </CardHeader>
+
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -200,15 +164,9 @@ import { toast } from "sonner"
 
                   {sourceActivity && (
                     <div className="mt-2 text-sm">
-                      <div>
-                        <span className="font-medium">Contrato:</span> {sourceActivity.contrato}
-                      </div>
-                      <div>
-                        <span className="font-medium">Proyecto:</span> {sourceActivity.proyecto}
-                      </div>
-                      <div>
-                        <span className="font-medium">Saldo disponible:</span> {formatCurrency(availableAmount)}
-                      </div>
+                      <div><span className="font-medium">Contrato:</span> {sourceActivity.contrato}</div>
+                      <div><span className="font-medium">Proyecto:</span> {sourceActivity.proyecto}</div>
+                      <div><span className="font-medium">Saldo disponible:</span> {formatCurrency(availableAmount)}</div>
                     </div>
                   )}
                 </div>
@@ -218,8 +176,8 @@ import { toast } from "sonner"
                     <Label htmlFor="referencia">Payment inv. reference</Label>
                     <Input
                       id="referencia"
-                      value={referencia}
-                      onChange={(e) => setReferencia(e.target.value)}
+                      value={referenciaBase}
+                      onChange={(e) => setReferenciaBase(e.target.value)}
                       placeholder="Número de referencia"
                     />
                   </div>
@@ -260,34 +218,20 @@ import { toast } from "sonner"
                 <div className="space-y-4">
                   {distributions.map((distribution, index) => (
                     <Card key={index}>
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-start mb-4">
+                      <CardContent className="p-4 space-y-4">
+                        <div className="flex justify-between items-start">
                           <h4 className="text-sm font-medium">Distribution #{index + 1}</h4>
-                          <Button type="button" variant="ghost" size="sm" onClick={() => removeDistribution(index)}>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeDistribution(index)}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor={`activity-${index}`}>Target Activity</Label>
-                            <Select
-                              value={distribution.activityId}
-                              onValueChange={(value) => updateDistribution(index, "activityId", value)}
-                            >
-                              <SelectTrigger id={`activity-${index}`}>
-                                <SelectValue placeholder="Seleccionar actividad" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {applicableActivities.map((activity) => (
-                                  <SelectItem key={activity.id} value={activity.id}>
-                                    {activity.numero} - {formatCurrency(activity.saldo)}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-
                           <div>
                             <Label htmlFor={`amount-${index}`}>Amount to apply</Label>
                             <Input
@@ -298,18 +242,18 @@ import { toast } from "sonner"
                               step="0.01"
                               value={distribution.monto}
                               onChange={(e) =>
-                                updateDistribution(index, "monto", Number.parseFloat(e.target.value) || 0)
+                                updateDistribution(index, "monto", parseFloat(e.target.value) || 0)
                               }
                             />
                           </div>
 
-                          <div className="md:col-span-2">
+                          <div>
                             <Label htmlFor={`notes-${index}`}>Notes</Label>
                             <Textarea
                               id={`notes-${index}`}
                               value={distribution.notas}
                               onChange={(e) => updateDistribution(index, "notas", e.target.value)}
-                              placeholder="Detalles adicionales sobre este pago"
+                              placeholder="Detalles adicionales"
                               rows={2}
                             />
                           </div>
@@ -319,9 +263,7 @@ import { toast } from "sonner"
                   ))}
 
                   <div className="flex justify-between items-center p-4 bg-muted rounded-md">
-                    <div>
-                      <span className="text-sm font-medium">Total a aplicar:</span>
-                    </div>
+                    <div className="text-sm font-medium">Total a aplicar:</div>
                     <div className="text-lg font-bold">{formatCurrency(totalDistributed)}</div>
                   </div>
 
@@ -362,13 +304,17 @@ import { toast } from "sonner"
                           <Badge variant="outline">{item.activity.numero}</Badge>
                           <div className="text-sm font-medium mt-1">{formatCurrency(item.payment.monto)}</div>
                         </div>
-                        <div className="text-xs text-muted-foreground">{formatDate(new Date(item.payment.fecha))}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {formatDate(new Date(item.payment.fecha))}
+                        </div>
                       </div>
                       <div className="text-xs">
                         <span className="font-medium">Ref:</span> {item.payment.referencia} |
                         <span className="font-medium"> Método:</span> {item.payment.metodo}
                       </div>
-                      {item.payment.notas && <div className="text-xs text-muted-foreground">{item.payment.notas}</div>}
+                      {item.payment.notas && (
+                        <div className="text-xs text-muted-foreground">{item.payment.notas}</div>
+                      )}
                     </div>
                   ))}
                 </div>

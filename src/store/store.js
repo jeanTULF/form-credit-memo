@@ -19,50 +19,36 @@ export const useActivitiesStore = create(
 
       setFilteredActivities: (filtered) => set({ filteredActivities: filtered }),
 
-      applyPayment: (sourceActivityId, distributions) => {
-        const current = get().activities
-        const updated = [...current]
+      applyPayment: (activityId, distributions) => {
+  const current = get().activities
+  const updated = [...current]
 
-        // Encuentra la actividad origen
-        const sourceIdx = updated.findIndex((a) => a.id === sourceActivityId)
-        if (sourceIdx === -1) return
+  const idx = updated.findIndex((a) => a.id === activityId)
+  if (idx === -1) return
 
-        // Total a aplicar
-        const totalAmount = distributions.reduce((sum, d) => sum + d.monto, 0)
+  const totalAmount = distributions.reduce((sum, d) => sum + d.monto, 0)
 
-        // Resta saldo a la actividad origen
-        updated[sourceIdx] = {
-          ...updated[sourceIdx],
-          saldo: updated[sourceIdx].saldo - totalAmount,
-        }
+  const paymentDate = new Date().toISOString()
 
-        const paymentDate = new Date().toISOString()
+  const nuevosPagos = distributions.map((dist) => ({
+    referencia: dist.referencia,
+    fecha: paymentDate,
+    monto: dist.monto,
+    metodo: dist.metodo,
+    notas: dist.notas || "",
+  }))
 
-        // Aplica cada distribución
-        distributions.forEach((dist) => {
-          const targetIdx = updated.findIndex((a) => a.id === dist.activityId)
-          if (targetIdx === -1) return
+  updated[idx] = {
+    ...updated[idx],
+    pagos: [...updated[idx].pagos, ...nuevosPagos],
+    saldo: updated[idx].saldo - totalAmount,
+  }
 
-          const newPayment = {
-            referencia: dist.referencia,
-            fecha: paymentDate,
-            monto: dist.monto,
-            metodo: dist.metodo,
-            notas: dist.notas || "",
-          }
-
-          updated[targetIdx] = {
-            ...updated[targetIdx],
-            pagos: [...updated[targetIdx].pagos, newPayment],
-            saldo: updated[targetIdx].saldo - dist.monto,
-          }
-        })
-
-        set({
-          activities: updated,
-          filteredActivities: updated, // sincroniza ambos
-        })
-      },
+  set({
+    activities: updated,
+    filteredActivities: updated,
+  })
+},
     }),
     {
       name: "activities-store",

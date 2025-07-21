@@ -115,7 +115,7 @@ export const DetailsDialog = ({ activity, onClose }) => {
                         <TableHead>Referencia</TableHead>
                         <TableHead>Fecha</TableHead>
                         <TableHead>Monto</TableHead>
-                        <TableHead>Factura aplicada</TableHead>
+                        <TableHead>Metodo de pago</TableHead>
                         <TableHead>Notas</TableHead>
                       </TableRow>
                     </TableHeader>
