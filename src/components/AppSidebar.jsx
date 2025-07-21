@@ -11,6 +11,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useActivitiesStore } from "@/store/store";
+import { Button } from "./ui/button";
 
 const items = [
     {
@@ -44,6 +46,13 @@ const AppSidebar = () => {
   const location = useLocation(); 
   const pathname = location.pathname;
 
+  const handleClear = () => {
+    useActivitiesStore.persist.clearStorage();
+    console.log("✅ Datos borrados del almacenamiento persistente.");
+    alert("Datos borrados correctamente");
+    window.location.reload();
+    };
+
 
 
   return (
@@ -69,6 +78,12 @@ const AppSidebar = () => {
             </SidebarMenuItem>
               )
           })}
+
+          <div>
+            <Button onClick={handleClear}>
+              Borrar datos guardados (prueba)
+            </Button>
+          </div>
 
         </SidebarMenu>
       </SidebarContent>

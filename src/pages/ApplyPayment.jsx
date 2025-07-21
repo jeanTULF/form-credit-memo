@@ -27,7 +27,7 @@ const ApplyPayment = () => {
   const [availableAmount, setAvailableAmount] = useState(0)
   const [distributions, setDistributions] = useState([])
   const [referenciaBase, setReferenciaBase] = useState(`VM.Inv-${Date.now().toString().slice(-6)}`)
-  const [metodo, setMetodo] = useState("ACH")
+  // const [metodo, setMetodo] = useState("ACH")
   const [recentPayments, setRecentPayments] = useState([])
 
   const activitiesWithSaldo = activities.filter((a) => a.saldo > 0)
@@ -66,7 +66,7 @@ const ApplyPayment = () => {
       {
         monto: 0,
         referencia: referenciaBase,
-        metodo,
+        metodo: "",
         notas: "",
       },
     ])
@@ -181,19 +181,6 @@ const ApplyPayment = () => {
                       placeholder="Número de referencia"
                     />
                   </div>
-
-                  <div>
-                    <Label htmlFor="metodo">Payment method</Label>
-                    <Select value={metodo} onValueChange={setMetodo}>
-                      <SelectTrigger id="metodo">
-                        <SelectValue placeholder="Seleccionar método" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="ACH">ACH</SelectItem>
-                        <SelectItem value="CM">Credit memo</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
                 </div>
               </div>
 
@@ -236,7 +223,7 @@ const ApplyPayment = () => {
                             <Label htmlFor={`amount-${index}`}>Amount to apply</Label>
                             <Input
                               id={`amount-${index}`}
-                              type="number"
+                              type="text"
                               min="0"
                               max={distribution.monto + availableAmount}
                               step="0.01"
@@ -256,6 +243,22 @@ const ApplyPayment = () => {
                               placeholder="Detalles adicionales"
                               rows={2}
                             />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="metodo">Payment method</Label>
+                            <Select
+                              value={distribution.metodo}
+                              onValueChange={(value) => updateDistribution(index, "metodo", value)}
+                            >
+                              <SelectTrigger id="metodo">
+                                <SelectValue placeholder="Seleccionar método" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="ACH">ACH</SelectItem>
+                                <SelectItem value="CM">Credit memo</SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
                       </CardContent>
